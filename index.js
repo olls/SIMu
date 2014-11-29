@@ -58,7 +58,7 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('update', [bid, entities[bid]]);
         setTimeout(function () {update_bullet(bid, socket, entities)}, 200);
       } else {
-        socket.broadcast.emit('delete', bid);
+        socket.broadcast.emit('delete', [bid, entities[bid]]);
         delete entities[bid];
       }
     };
