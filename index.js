@@ -1,30 +1,61 @@
 var express = require('express');
-var io = require('socket.io');
+var http = require('http');
+var socketio = require('socket.io');
 var path = require('path');
+
+// Server Setup
+var port = 3000;
 var app = express();
-
-var id = 0;
-var players = {};
-
-app.get('/players', function (req, res) {
-  res.send(players);
-});
-
-app.get('/new', function (req, res) {
-  var player = {id: id++, x: 0, y: 0};
-  players[player.id] = player;
-  res.send(player);
-});
-
-app.get('/update/:id/:x/:y', function (req, res) {
-  players[req.params.id].x = req.params.x;
-  players[req.params.id].y = req.params.y;
-  res.send();
-});
+var server = http.Server(app);
+var io = socketio(server);
 
 app.use(express.static(path.join(__dirname, 'client')));
 
-var port = 3000;
-app.listen(port, function () {
-  console.log('Running on port:', port);
+// Game Setup
+var id = 0;
+var player_y = 10;
+var player_x = 100;
+var entities = {};
+
+// Sockets
+io.on('connection', function (socket) {
+  socket.id = id++;
+  entities[socket.id] = {
+    type: 'player',
+    x: player_x,
+    y: player_y
+  };
+  socket.broadcast.emit('new', [socket.id, enitities[socket.id]]);
+
+  socket.on('move', function (data) {
+    entities[socket.id].x = data.dx;
+    socket.broadcast.emit('update', [socket.id, entities[socket.id]]);
+  });
+
+  socket.on('fire', function (data) {
+    var bid = id++;
+    entities[bid] = {
+      type: 'bullet',
+      x: entities[socket.id].x,
+      y: entities[socket.id].y
+    };
+    socket.broadcast.emit('new', [bid, entities[bid]]);
+
+    update_bullet(bid, socket, entities);
+    function update_bullet (bid, socket, entities) {
+      if (entites[bid].y > 0) {
+        entites[bid].y--;
+        socket.broadcast.emit('update', [bid, entities[bid]]);
+        setTimeout(function () {update_bullet(bid, socket, entities)}, 200);
+      } else {
+        socket.broadcast.emit('delete', bid);
+        delete entities[bid];
+      }
+    };
+  });
+
+});
+
+server.listen(port, function () {
+  console.log('Running on port', port);
 });
