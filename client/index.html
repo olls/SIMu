@@ -12,14 +12,21 @@
     <script src="pixi.dev.js"></script>
 </head>
 <body>
-    <script>
+
+<script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
+<script>
+	var socket = io(); //Get the socket conn to the server
  
  // create an new instance of a pixi stage with a black background
 	var color = 0x00; //Black background
     var stage = new PIXI.Stage(color); 
  
     // create a renderer instance. width=1000, height = 800
-    var renderer = PIXI.autoDetectRenderer(1000, 800);
+	var screen_width = 1000;
+	var screen_height = 800;
+    var renderer = PIXI.autoDetectRenderer(screen_width, screen_height);
+ 
+	var sprite_types = {'bullet' : 0, 'invader_1' : 1, 'invader_2' : 2, 'invader_3' : 3, 'invader_4' : 4, 'player':5};
  
  
 	// importing a texture atlas created with texturepacker
@@ -33,71 +40,97 @@
 	// add the renderer view element to the DOM
 	document.body.appendChild(renderer.view);
 	// use callback
-	loader.onComplete = onSpritesLoaded
+	loader.onComplete = onSpritesLoaded;
+	
 	//begin load
 	loader.load();
 	
+	var entities = {};
+	
+	
+	//Listen to server's broadcasts
+	socket.on('new', function(data){
+		createSprite(data[0], data[1]);
+	});
+	socket.on('update', function(data){
+		entities[data[0]].position.x = data[1].x;
+		entities[data[0]].position.y = data[1].y;
+	});
+	socket.on('delete', function(data){
+		//console.log(data)
+		
+		gameContainer.removeChild(entities[data[0]]);
+		delete entities[data[0]];
+	});
+	
+	var map = {32: false, 37: false, 39: false};
+	document.addEventListener("keydown", function(e){
+		if (e.keyCode in map) {
+			map[e.keyCode] = true;
+		}
+	}, false);
+	document.addEventListener("keyup", function(e){
+		if (e.keyCode in map) {
+			map[e.keyCode] = false;
+		}
+	}, false);
+
+  
+
+
 	
 	function onSpritesLoaded(){
-		// place down the space invader images
-		// new sprite
-		var tile = PIXI.Sprite.fromFrame(1);
-		
-		// buttonmode+interactive = acts like a button
-		/*tile.buttonMode=true;
-		tile.interactive = true;
-		// is the tile selected?
-		tile.isSelected=false;*/
-		// set a tile value
-		tile.theVal=0;
-		/*tile.theVal=chosenTiles[i*6+j]*/
-		// place the tile
-		tile.position.x = 0;
-		tile.position.y = 80;
-		// add the tile
-		gameContainer.addChild(tile);
-			
+	
 		requestAnimFrame(animate);
 	}
- 
-	
-	
-	
-	
-    requestAnimFrame( animate );
-	
- 
- // create a texture from an image path
-    //var texture = PIXI.Texture.fromImage("Resources/space invaders.png");
-    // create a new Sprite using the texture
-    //var bunny = new PIXI.Sprite(texture);
 
- 
-    // center the sprites anchor point
-    //bunny.anchor.x = 0.5;
-    //bunny.anchor.y = 0.5;
- 
-    // move the sprite t the center of the screen
-    //bunny.position.x = 200;
-    //bunny.position.y = 150;
- 
-    //stage.addChild(bunny);
- 
- /*
-    function animate() {
- 
-        requestAnimFrame( animate );
- 
-		// just for fun, lets rotate mr rabbit a little
-        bunny.rotation += 0.1;
+	function createSprite(id, server_entity)
+	{
+		var sprite = PIXI.Sprite.fromFrame(sprite_types[server_entity.type]);
+				
+		//Add the sprite to the array so that we can move it later
+		entities[id] = sprite;
 		
-        // render the stage   
-        renderer.render(stage);
-    }*/
+		// place the sprite
+		sprite.position.x = server_entity.x;
+		sprite.position.y = server_entity.y;
+		
+		// add the sprite
+		gameContainer.addChild(sprite);
+	}
+	
 	
 	function animate() {
+	
+		if(map[32]) {
+			socket.emit('fire');
+		}
+		if(map[37]) //move left
+		{
+			socket.emit('move', 'left');
+		}
+		if (map[39]) //move right
+		{
+			socket.emit('move', 'right');
+		}
+			
+			
+		/*//var temp = get_positions();
+		//if (invaders[invaders.length-1].position.x <= screen_width)
+			for (i=0; i<invaders.length; i++)
+			{
+				invaders[i].position.x += 1;
+			}
+		//else
+			//for (i=0; i<invaders.length; i++)
+			//{
+			//	invaders[i].position.x -= 1;
+			//}
+	*/
 		requestAnimFrame(animate);
 		renderer.render(stage);
+		
+		//console.log('test');
 	}
 	
     // Code will go here
