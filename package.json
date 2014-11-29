@@ -16,6 +16,7 @@
     "url": "https://github.com/olls/SIMu/issues"
   },
   "dependencies": {
-    "express": "~4.10.4"
+    "express": "~4.10.4",
+    "socket.io": "~1.2.1"
   }
 }
