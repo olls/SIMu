@@ -6,7 +6,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #000000;
+            background-color: #fff;
         }
     </style>
     <script src="pixi.dev.js"></script>
@@ -15,10 +15,11 @@
     <script>
  
  // create an new instance of a pixi stage
-    var stage = new PIXI.Stage(0x66FF99);
+	var color = 0x00; //Black background
+    var stage = new PIXI.Stage(color); 
  
     // create a renderer instance.
-    var renderer = PIXI.autoDetectRenderer(400, 300);
+    var renderer = PIXI.autoDetectRenderer(1000, 800);
  
     // add the renderer view element to the DOM
     document.body.appendChild(renderer.view);
