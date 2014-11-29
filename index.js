@@ -16,6 +16,7 @@ var id = 0;
 var screen = {x: 1000, y:800};
 var player_x = (screen.x - 73) / 2;
 var player_y = screen.y - 52;
+var p_speed = 10;
 var entities = {};
 
 // Sockets
