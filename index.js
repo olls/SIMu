@@ -28,11 +28,6 @@ io.on('connection', function (socket) {
   };
   socket.broadcast.emit('new', [socket.id, entities[socket.id]]);
 
-  socket.on('move', function (data) {
-    entities[socket.id].x = data.dx;
-    socket.broadcast.emit('update', [socket.id, entities[socket.id]]);
-  });
-
   socket.on('move', function (dir) {
     if (dir == 'left') {
       entities[socket.id].x -= p_speed;
