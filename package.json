@@ -1,0 +1,21 @@
+{
+  "name": "simu",
+  "version": "0.0.0",
+  "description": "SpaceInvaders Multiplayer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olls/SIMu.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olls/SIMu/issues"
+  },
+  "dependencies": {
+    "express": "~4.10.4"
+  }
+}
