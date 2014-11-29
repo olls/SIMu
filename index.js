@@ -33,6 +33,15 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('update', [socket.id, entities[socket.id]]);
   });
 
+  socket.on('move', function (dir) {
+    if (dir == 'left') {
+      entities[socket.id].x -= p_speed;
+    } else if (dir == 'right') {
+      entities[socket.id].x += p_speed;
+    }
+    socket.broadcast.emit('update', [socket.id, entities[socket.id]]);
+  });
+
   socket.on('fire', function (data) {
     var bid = id++;
     entities[bid] = {
