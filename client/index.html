@@ -14,33 +14,76 @@
 <body>
     <script>
  
- // create an new instance of a pixi stage
+ // create an new instance of a pixi stage with a black background
 	var color = 0x00; //Black background
     var stage = new PIXI.Stage(color); 
  
-    // create a renderer instance.
+    // create a renderer instance. width=1000, height = 800
     var renderer = PIXI.autoDetectRenderer(1000, 800);
  
-    // add the renderer view element to the DOM
-    document.body.appendChild(renderer.view);
  
+	// importing a texture atlas created with texturepacker
+	var tileAtlas = ["Resources/sprite.json"];
+	// create a new loader
+	var loader = new PIXI.AssetLoader(tileAtlas);
+	// create an empty container
+	var gameContainer = new PIXI.DisplayObjectContainer();
+	// add the container to the stage
+	stage.addChild(gameContainer);
+	// add the renderer view element to the DOM
+	document.body.appendChild(renderer.view);
+	// use callback
+	loader.onComplete = onSpritesLoaded
+	//begin load
+	loader.load();
+	
+	
+	function onSpritesLoaded(){
+		// place down the space invader images
+		// new sprite
+		var tile = PIXI.Sprite.fromFrame(1);
+		
+		// buttonmode+interactive = acts like a button
+		/*tile.buttonMode=true;
+		tile.interactive = true;
+		// is the tile selected?
+		tile.isSelected=false;*/
+		// set a tile value
+		tile.theVal=0;
+		/*tile.theVal=chosenTiles[i*6+j]*/
+		// place the tile
+		tile.position.x = 0;
+		tile.position.y = 80;
+		// add the tile
+		gameContainer.addChild(tile);
+			
+		requestAnimFrame(animate);
+	}
+ 
+	
+	
+	
+	
     requestAnimFrame( animate );
+	
  
  // create a texture from an image path
-    var texture = PIXI.Texture.fromImage("bunny.png");
+    //var texture = PIXI.Texture.fromImage("Resources/space invaders.png");
     // create a new Sprite using the texture
-    var bunny = new PIXI.Sprite(texture);
+    //var bunny = new PIXI.Sprite(texture);
+
  
     // center the sprites anchor point
-    bunny.anchor.x = 0.5;
-    bunny.anchor.y = 0.5;
+    //bunny.anchor.x = 0.5;
+    //bunny.anchor.y = 0.5;
  
     // move the sprite t the center of the screen
-    bunny.position.x = 200;
-    bunny.position.y = 150;
+    //bunny.position.x = 200;
+    //bunny.position.y = 150;
  
-    stage.addChild(bunny);
+    //stage.addChild(bunny);
  
+ /*
     function animate() {
  
         requestAnimFrame( animate );
@@ -50,7 +93,13 @@
 		
         // render the stage   
         renderer.render(stage);
-    }
+    }*/
+	
+	function animate() {
+		requestAnimFrame(animate);
+		renderer.render(stage);
+	}
+	
     // Code will go here
      </script>
  
