@@ -44,8 +44,8 @@ io.on('connection', function (socket) {
 
     update_bullet(bid, socket, entities);
     function update_bullet (bid, socket, entities) {
-      if (entites[bid].y > 0) {
-        entites[bid].y--;
+      if (entities[bid].y > 0) {
+        entities[bid].y--;
         socket.broadcast.emit('update', [bid, entities[bid]]);
         setTimeout(function () {update_bullet(bid, socket, entities)}, 200);
       } else {
