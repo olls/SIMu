@@ -25,7 +25,7 @@ io.on('connection', function (socket) {
     x: player_x,
     y: player_y
   };
-  socket.broadcast.emit('new', [socket.id, enitities[socket.id]]);
+  socket.broadcast.emit('new', [socket.id, entities[socket.id]]);
 
   socket.on('move', function (data) {
     entities[socket.id].x = data.dx;
