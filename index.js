@@ -14,8 +14,10 @@ app.use(express.static(path.join(__dirname, 'client')));
 // Game Setup
 var id = 0;
 var screen = {x: 1000, y:800};
-var player_x = (screen.x - 73) / 2;
-var player_y = screen.y - 52;
+var p_width = 72;
+var p_height = 52;
+var player_x = (screen.x - p_width) / 2;
+var player_y = screen.y - p_height;
 var p_speed = 10;
 var entities = {};
 
@@ -42,7 +44,7 @@ io.on('connection', function (socket) {
     var bid = id++;
     entities[bid] = {
       type: 'bullet',
-      x: entities[socket.id].x,
+      x: entities[socket.id].x + (p_width / 2),
       y: entities[socket.id].y
     };
     socket.broadcast.emit('new', [bid, entities[bid]]);
