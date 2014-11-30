@@ -141,6 +141,15 @@
 			sprite.position.x = server_entity.x;
 			sprite.position.y = server_entity.y;
 			
+			//if the player is not your own, grey it out
+			if (server_entity.type == 'player' && id != socket_id)
+			{
+				// paint tile black
+				sprite.tint = 0x000000;
+				// set it a bit transparent (it will look grey)
+				sprite.alpha=0.5;
+			}
+			else
 			// add the sprite
 			gameContainer.addChild(sprite);
 		}
