@@ -111,7 +111,7 @@ function player_collides (bid) {
 
 function get_score(inv_id) {
   // Get the score value for a invader
-  return entities[inv_id].type.slice('_')[1];
+  return entities[inv_id].type.split('_')[1];
 }
 
 function invader_fire () {
@@ -163,6 +163,7 @@ io.on('connection', function (socket) {
   socket.id = id++;
   socket.emit('id', socket.id);
   socket.score = 0;
+  socket.broadcast.emit('score', [socket.id, socket.score]);
   socket.bullet = false;
   console.log('New Player:', socket.id);
   entities[socket.id] = {
@@ -189,6 +190,7 @@ io.on('connection', function (socket) {
 
   socket.on('die', function () {
     socket.score = 0;
+    socket.broadcast.emit('score', [socket.id, socket.score]);
     entities[socket.id].alive = false;
     entities[socket.id].x = player_x;
     entities[socket.id].y = player_y;
@@ -242,6 +244,7 @@ io.on('connection', function (socket) {
           socket.bullet = false;
 
           socket.score += get_score(inv_id);
+          console.log(socket.score);
           socket.broadcast.emit('score', [socket.id, socket.score]);
 
           socket.broadcast.emit('delete', [bid, entities[bid]]);
