@@ -22,14 +22,14 @@
 <script>
 	var socket = io(); //Get the socket connection to the server
  
- // create an new instance of a pixi stage with a black background
+	// create an new instance of a pixi stage with a black background
 	var color = 0x00; //Black background
-    var stage = new PIXI.Stage(color); 
+	var stage = new PIXI.Stage(color); 
  
-    // create a renderer instance. width=1000, height = 800
+	// create a renderer instance. width=1000, height = 800
 	var screen_width = 1400;
 	var screen_height = 800;
-    var renderer = PIXI.autoDetectRenderer(screen_width, screen_height);
+	var renderer = PIXI.autoDetectRenderer(screen_width, screen_height);
  
 	var sprite_types = {'bullet' : 0, 'invader_1' : 1, 'invader_2' : 2, 'invader_3' : 3, 'invader_4' : 4, 'player':5, 'invader_explode':6};
  
@@ -108,10 +108,6 @@
 			map[e.keyCode] = false;
 		}
 	}, false);
-
-  
-
-
 	
 	function onSpritesLoaded(){
 	
@@ -144,22 +140,8 @@
 	
 	
 	function animate() {
-		/*//var temp = get_positions();
-		//if (invaders[invaders.length-1].position.x <= screen_width)
-			for (i=0; i<invaders.length; i++)
-			{
-				invaders[i].position.x += 1;
-			}
-		//else
-			//for (i=0; i<invaders.length; i++)
-			//{
-			//	invaders[i].position.x -= 1;
-			//}
-	*/
 		requestAnimFrame(animate);
 		renderer.render(stage);
-		
-		//console.log('test');
 	}
 	
 	//Function to limit input bullets or any inputs
@@ -178,7 +160,6 @@
 		}
 	}
 	
-    // Code will go here
      </script>
  
     </body>
