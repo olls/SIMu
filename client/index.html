@@ -154,6 +154,7 @@ s.parentNode.insertBefore(wf, s);
 	function onSpritesLoaded(){
 
 		window.setInterval(inputLoop, 60);
+		socket.emit('start');
 		requestAnimFrame(animate);
 	}
 
