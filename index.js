@@ -13,12 +13,12 @@ app.use(express.static(path.join(__dirname, 'client')));
 
 // Game Setup
 var id = 0;
-var screen = {x: 1400, y:800};
+var screen = {x: 1400, y: 800};
 
 var p_width = 72/2;
 var p_height = 52/2;
 var player_x = (screen.x - p_width) / 2;
-var player_y = screen.y - p_height;
+var player_y = screen.y - p_height - 10;
 var p_speed = 10;
 
 var inv_w = 110/4;
@@ -168,7 +168,7 @@ io.on('connection', function (socket) {
 
         } else {
           // Bullet keeps moving
-          entities[bid].y -= 20;
+          entities[bid].y -= 30;
           var update = {};
           update[bid] = entities[bid];
           socket.broadcast.emit('update', update);
