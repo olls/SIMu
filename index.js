@@ -55,7 +55,9 @@ io.on('connection', function (socket) {
       x: entities[socket.id].x + (p_width / 2),
       y: entities[socket.id].y
     };
-    socket.broadcast.emit('new', {bid: entities[bid]});
+    var b_ent = {};
+    b_ent[bid] = entities[bid];
+    socket.broadcast.emit('new', b_ent);
 
     update_bullet(bid, socket, entities);
     function update_bullet (bid, socket, entities) {
