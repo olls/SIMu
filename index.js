@@ -25,18 +25,20 @@ var inv_w = 110/4;
 var inv_h = 80/4;
 var inv_d = 1;
 var inv_speed = 15;
+var inv_ny = 7;
+var inv_nx = 15;
 
 var entities = {};
 
 gen_invaders();
 
 function gen_invaders () {
-  for (var y = 0; y < 7; y++) {
-    for (var x = 0; x < 15; x++) {
+  for (var y = 0; y < inv_ny; y++) {
+    for (var x = 0; x < inv_nx; x++) {
       var e_id = id++;
       entities[e_id] = {
         type: 'invader_1',
-        x: x * (inv_w+25),
+        x: x * (inv_w+25) + (( screen.x - ((inv_w+25) * inv_nx) )/2),
         y: y * (inv_h+25)
       };
     }
@@ -134,6 +136,13 @@ io.on('connection', function (socket) {
     update_bullet(bid, socket, entities);
     function update_bullet (bid, socket, entities) {
       if (entities[bid].y > 0) {
+        if (var inv_id = collides(bid)) {
+          socket.bullet = false;
+          socket.broadcast.emit('delete', [bid, entities[bid]]);
+          delete entities[bid];
+          socket.broadcast.emit('delete', [inv_id, entities[inv_id]]);
+          delete entities[inv_id];
+        }
         entities[bid].y -= 20;
         var update = {};
         update[bid] = entities[bid];
