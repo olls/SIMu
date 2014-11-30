@@ -147,7 +147,8 @@ function init()
 	socket.on('score', function(data){
 		//Update individual score
 		console.log(data);
-		player_scores[data[0]].setText("Score: "+data[1]);
+		if (socket_id == data[0])
+			player_scores[data[0]].setText("Score: "+data[1]);
 		
 		
 		//Update the leader board score
