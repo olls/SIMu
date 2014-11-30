@@ -14,8 +14,8 @@ app.use(express.static(path.join(__dirname, 'client')));
 // Game Setup
 var id = 0;
 var screen = {x: 1400, y:800};
-var p_width = 72;
-var p_height = 52;
+var p_width = 72/2;
+var p_height = 52/2;
 var player_x = (screen.x - p_width) / 2;
 var player_y = screen.y - p_height;
 var p_speed = 10;
