@@ -1,7 +1,8 @@
 {"frames": [
+
 {
 	"filename": "bullet.png",
-	"frame": {"x":405,"y":62,"w":8,"h":10},
+	"frame": {"x":5,"y":90,"w":8,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":10},
@@ -46,11 +47,20 @@
 },
 {
 	"filename": "player.png",
-	"frame": {"x":405,"y":5,"w":73,"h":52},
+	"frame": {"x":405,"y":68,"w":73,"h":52},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":52},
 	"sourceSize": {"w":73,"h":52},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "invader_explode.png",
+	"frame": {"x":405,"y":5,"w":96,"h":58},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":10,"w":96,"h":58},
+	"sourceSize": {"w":110,"h":80},
 	"pivot": {"x":0.5,"y":0.5}
 }],
 "meta": {
@@ -58,8 +68,8 @@
 	"version": "1.0",
 	"image": "sprite.png",
 	"format": "RGBA8888",
-	"size": {"w":483,"h":90},
+	"size": {"w":506,"h":125},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ed489c92ef747ee353f02d0c783113ad:2aafa57cae596261ea3c984d105fb1db:68d88b3cf7eafc9b5accfffdfb2fda91$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3dbda3b2c00ab85edfdd2121ea831c61:e11b7e60fc05e729480e200276c4791a:68d88b3cf7eafc9b5accfffdfb2fda91$"
 }
 }
