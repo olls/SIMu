@@ -26,7 +26,7 @@ families: [ 'Snippet', 'Arvo:700italic', 'Podkova:700' ]
 },
 active: function() {
 // do something
-init();
+//init();
 }
 };
 (function() {
@@ -41,12 +41,6 @@ s.parentNode.insertBefore(wf, s);
 
 function init()
 {// create some white text using the Snippet webfont
-		var text = new PIXI.Text("Score: 0", { font: "35px Snippet", fill: "white", align: "left" });
-		text.position.x = 20;
-		text.position.y = 20;
-		stage.addChild(text);
-		
-		player_scores[socket_id] = text;
 }
 
 
@@ -92,6 +86,14 @@ function init()
 	//Listen to server's broadcasts
 	socket.on('id', function(id){
 		socket_id = id;
+		
+		
+		var text = new PIXI.Text("Score: 0", { font: "35px Snippet", fill: "white", align: "left" });
+		text.position.x = 100;
+		text.position.y = 20;
+		stage.addChild(text);
+		
+		player_scores[socket_id] = text;
 	});
 	
 	socket.on('new', function(server_entities){
@@ -138,6 +140,7 @@ function init()
 			alert('Game Over. Press OK to play again');
 			socket.emit('die');
 			map = {32: false, 37: false, 39: false};
+			socket.emit('start');
 		}
 	});
 	
