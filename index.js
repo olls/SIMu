@@ -24,6 +24,7 @@ var entities = {};
 // Sockets
 io.on('connection', function (socket) {
   socket.id = id++;
+  socket.bullet = false;
   console.log('New Player:', socket.id);
   entities[socket.id] = {
     type: 'player',
@@ -52,12 +53,16 @@ io.on('connection', function (socket) {
   });
 
   socket.on('fire', function () {
+    if (socket.bullet) {
+      return;
+    }
     var bid = id++;
     entities[bid] = {
       type: 'bullet',
       x: entities[socket.id].x + (p_width / 2),
       y: entities[socket.id].y
     };
+    socket.bullet = true;
     var b_ent = {};
     b_ent[bid] = entities[bid];
     socket.broadcast.emit('new', b_ent);
@@ -69,6 +74,7 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('update', [bid, entities[bid]]);
         setTimeout(function () {update_bullet(bid, socket, entities)}, 200);
       } else {
+        socket.bullet = false;
         socket.broadcast.emit('delete', [bid, entities[bid]]);
         delete entities[bid];
       }
