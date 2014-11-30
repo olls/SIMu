@@ -100,7 +100,7 @@ function collides (bid) {
 function player_collides (bid) {
   for (var id in entities) {
     // If id is a player and it collides with bullet
-    if ((entities[id].type == 'player') &&
+    if ((entities[id].type == 'player' && entities[id].alive) &&
         (entities[bid].x >= entities[id].x && entities[bid].x <= (entities[id].x + p_width) &&
          entities[bid].y >= entities[id].y && entities[bid].y <= (entities[id].y + p_height))) {
       return id;
@@ -139,7 +139,6 @@ function invader_fire () {
         var p_id = player_collides(bid);
         if (p_id) {
           // Bullet hit player
-
           io.sockets.emit('delete', [bid, entities[bid]]);
           delete entities[bid];
           io.sockets.emit('explode', [p_id, entities[p_id]]);
@@ -169,7 +168,8 @@ io.on('connection', function (socket) {
   entities[socket.id] = {
     type: 'player',
     x: player_x,
-    y: player_y
+    y: player_y,
+    alive: false
   };
   // Pass all entities to new client
   socket.emit('new', entities);
@@ -179,12 +179,17 @@ io.on('connection', function (socket) {
 
   socket.on('disconnect', function () {
     console.log('Player left:', socket.id);
-    socket.emit('delete', [socket.id, entities[socket.id]]);
+    socket.broadcast.emit('delete', [socket.id, entities[socket.id]]);
     delete entities[socket.id];
+  });
+
+  socket.on('start', function () {
+    entities[socket.id].alive = true;
   });
 
   socket.on('die', function () {
     socket.score = 0;
+    entities[socket.id].alive = false;
     entities[socket.id].x = player_x;
     entities[socket.id].y = player_y;
     var update = {};
@@ -193,6 +198,9 @@ io.on('connection', function (socket) {
   });
 
   socket.on('move', function (dir) {
+    if (!entities[socket.id].alive) {
+      return;
+    }
     if (dir == 'left' && entities[socket.id].x > p_speed) {
       entities[socket.id].x -= p_speed;
     } else if (dir == 'right' && entities[socket.id].x < (screen.x - p_speed - p_width)) {
@@ -204,7 +212,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('fire', function () {
-    if (socket.bullet) {
+    if (!entities[socket.id].alive || socket.bullet) {
       return;
     }
     var bid = id++;
