@@ -1,0 +1,65 @@
+{"frames": [
+{
+	"filename": "bullet.png",
+	"frame": {"x":405,"y":62,"w":8,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":10},
+	"sourceSize": {"w":8,"h":10},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "invaders1.png",
+	"frame": {"x":5,"y":5,"w":110,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":80},
+	"sourceSize": {"w":110,"h":80},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "invaders2.png",
+	"frame": {"x":120,"y":5,"w":110,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":80},
+	"sourceSize": {"w":110,"h":80},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "invaders3.png",
+	"frame": {"x":235,"y":5,"w":80,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
+	"sourceSize": {"w":80,"h":80},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "invaders4.png",
+	"frame": {"x":320,"y":5,"w":80,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
+	"sourceSize": {"w":80,"h":80},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "player.png",
+	"frame": {"x":405,"y":5,"w":73,"h":52},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":52},
+	"sourceSize": {"w":73,"h":52},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sprite.png",
+	"format": "RGBA8888",
+	"size": {"w":483,"h":90},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:ed489c92ef747ee353f02d0c783113ad:2aafa57cae596261ea3c984d105fb1db:68d88b3cf7eafc9b5accfffdfb2fda91$"
+}
+}
