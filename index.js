@@ -143,7 +143,6 @@ function invader_fire () {
           io.sockets.emit('delete', [bid, entities[bid]]);
           delete entities[bid];
           io.sockets.emit('explode', [p_id, entities[p_id]]);
-          io.sockets.emit('delete', [p_id, entities[p_id]]);
 
         } else {
           // Bullet keeps moving
