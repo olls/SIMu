@@ -67,7 +67,7 @@
 		delete entities[data[0]];
 	});
 	
-	document.addEventListener("unload", function(e){
+	window.addEventListener("unload", function(e){
 		socket.emit('leave');
 	});
 	
