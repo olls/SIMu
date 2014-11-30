@@ -24,7 +24,7 @@ var p_speed = 10;
 var inv_w = 110/4;
 var inv_h = 80/4;
 var inv_d = 1;
-var inv_speed = 15;
+var inv_speed = 150;
 var inv_ny = 8;
 var inv_nx = 15;
 
@@ -80,6 +80,10 @@ function move_invaders () {
       if (edge) {
         entities[id].y += inv_speed;
       }
+      if (entities[id].y + inv_h >= screen.y) {
+        game_over();
+        return;
+      }
       update[id] = entities[id];
     }
   }
@@ -87,6 +91,14 @@ function move_invaders () {
 }
 
 setInterval(move_invaders, 500);
+
+function game_over () {
+  for (var id in entities) {
+    if (entities[id].type == 'player') {
+      io.sockets.emit('explode', [id, entities[id]]);
+    }
+  }
+}
 
 function collides (bid) {
   for (var id in entities) {
@@ -247,7 +259,6 @@ io.on('connection', function (socket) {
           socket.bullet = false;
 
           socket.score += get_score(inv_id);
-          console.log(socket.score);
           socket.broadcast.emit('score', [socket.id, socket.score]);
 
           socket.broadcast.emit('delete', [bid, entities[bid]]);
