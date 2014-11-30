@@ -85,6 +85,7 @@
 	var socket_id;
 	
 	var start_screen;
+	var gameover_screen;
 	
 	var map = {32: false, 37: false, 39: false};
 	
@@ -152,7 +153,12 @@
 	});
 	
 	socket.on('gameover', function(){
-		entities = {};
+		stage.addChild(gamover_screen);
+		
+		window.setTimeout(function(){
+			//Remove the invader explosion
+			gameContainer.removeChild(gamover_screen);
+		}, 1000);
 	});
 	
 	socket.on('score', function(data){
@@ -180,13 +186,18 @@
 		
 		//Load the start screen
 		// create a texture from an image path
-		var texture = PIXI.Texture.fromImage("Resources/start_screen.jpg");
+		var texture_ss = PIXI.Texture.fromImage("Resources/start_screen.jpg");
 		// create a new Sprite using the texture
-		start_screen = new PIXI.Sprite(texture);
-		
+		start_screen = new PIXI.Sprite(texture_ss);
 		start_screen.position.x = start_screen.position.y = 0;
-		
 		stage.addChild(start_screen);
+		
+		//Load the gameover screen for future use
+		// create a texture from an image path
+		var texture_go = PIXI.Texture.fromImage("Resources/gameover.jpg");
+		// create a new Sprite using the texture
+		gamover_screen = new PIXI.Sprite(texture_go);
+		gamover_screen.position.x = gamover_screen.position.y = 0;
 		
 		window.setInterval(inputLoop, 60);
 		requestAnimFrame(animate);
