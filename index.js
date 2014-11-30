@@ -97,8 +97,8 @@ function gen_invaders () {
       var e_id = id++;
       entities[e_id] = {
         type: 'invader_1',
-        x: (x+10) * inv_w,
-        y: (y+10) * inv_h
+        x: x * (inv_w+10),
+        y: y * (inv_h+10)
       };
     }
   }
