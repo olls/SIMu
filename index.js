@@ -97,10 +97,68 @@ function collides (bid) {
   return false;
 }
 
+function player_collides (bid) {
+  for (var id in entities) {
+    // If id is a player and it collides with bullet
+    if ((entities[id].type == 'player') &&
+        (entities[bid].x >= entities[id].x && entities[bid].x <= (entities[id].x + p_width) &&
+         entities[bid].y >= entities[id].y && entities[bid].y <= (entities[id].y + p_height))) {
+      return id;
+    }
+  }
+  return false;
+}
+
 function get_score(inv_id) {
   // Get the score value for a invader
   return entities[inv_id].type.slice('_')[1];
 }
+
+function invader_fire () {
+  var keys = Object.keys(entities);
+  var inv_id = keys[keys.length * Math.random() << 0];
+  if (entities[inv_id].type.indexOf('invader') > -1) {
+    var bid = id++;
+    entities[bid] = {
+      type: 'bullet_inv',
+      x: entities[inv_id].x + (inv_w / 2),
+      y: entities[inv_id].y
+    };
+    var b_ent = {};
+    b_ent[bid] = entities[bid];
+    io.sockets.emit('new', b_ent);
+
+    update_bullet(bid, entities);
+    function update_bullet (bid, entities) {
+      if (entities[bid].y >= screen.y) {
+        // Bullet gone off bottom of screen
+        io.sockets.emit('delete', [bid, entities[bid]]);
+        delete entities[bid];
+
+      } else {
+        var p_id = player_collides(bid);
+        if (p_id) {
+          // Bullet hit player
+
+          io.sockets.emit('delete', [bid, entities[bid]]);
+          delete entities[bid];
+          io.sockets.emit('explode', [p_id, entities[p_id]]);
+          io.sockets.emit('delete', [p_id, entities[p_id]]);
+
+        } else {
+          // Bullet keeps moving
+          entities[bid].y += 20;
+          var update = {};
+          update[bid] = entities[bid];
+          io.sockets.emit('update', update);
+          setTimeout(function () {update_bullet(bid, entities)}, 100);
+        }
+      }
+    }
+  }
+}
+
+setInterval(invader_fire, 2000);
 
 // Sockets
 io.on('connection', function (socket) {
@@ -172,6 +230,7 @@ io.on('connection', function (socket) {
           socket.broadcast.emit('delete', [bid, entities[bid]]);
           delete entities[bid];
           socket.broadcast.emit('explode', [inv_id, entities[inv_id]]);
+          socket.broadcast.emit('delete', [inv_id, entities[inv_id]]);
           delete entities[inv_id];
 
         } else {
