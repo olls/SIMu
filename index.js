@@ -168,7 +168,7 @@ io.on('connection', function (socket) {
 
         } else {
           // Bullet keeps moving
-          entities[bid].y -= 30;
+          entities[bid].y -= 20;
           var update = {};
           update[bid] = entities[bid];
           socket.broadcast.emit('update', update);
