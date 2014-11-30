@@ -1,0 +1,8 @@
+{
+  "hosts": {
+    "oliverfaircliff": {
+      "output": "/var/node/simu",
+      "url": "http://simu.oliverfaircliff.com"
+    }
+  }
+}
