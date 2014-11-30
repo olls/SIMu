@@ -161,7 +161,7 @@ io.on('connection', function (socket) {
           socket.bullet = false;
           socket.broadcast.emit('delete', [bid, entities[bid]]);
           delete entities[bid];
-          socket.broadcast.emit('delete', [inv_id, entities[inv_id]]);
+          socket.broadcast.emit('explode', [inv_id, entities[inv_id]]);
           delete entities[inv_id];
 
         } else {
