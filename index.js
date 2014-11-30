@@ -21,6 +21,8 @@ var player_y = screen.y - p_height;
 var p_speed = 10;
 var entities = {};
 
+gen_invaders();
+
 // Sockets
 io.on('connection', function (socket) {
   socket.id = id++;
@@ -85,3 +87,19 @@ io.on('connection', function (socket) {
 server.listen(port, function () {
   console.log('Running on port', port);
 });
+
+function gen_invaders () {
+  var inv_w = 110/2;
+  var inv_h = 80/2;
+
+  for (var y = 0; y < 5; y++) {
+    for (var x = 0; y < 10; x++) {
+      var e_id = id++;
+      entities[id] = {
+        type: 'invader_1',
+        x: x*inv_w + 10,
+        y: y*inv_h + 10
+      };
+    }
+  }
+}
