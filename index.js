@@ -100,7 +100,6 @@ function gen_invaders () {
         x: (x*inv_w) + 30,
         y: (y*inv_h) + 30
       };
-      console.log(entities[e_id])
     }
   }
 }
