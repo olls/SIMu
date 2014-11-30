@@ -162,6 +162,7 @@ setInterval(invader_fire, 2000);
 // Sockets
 io.on('connection', function (socket) {
   socket.id = id++;
+  socket.emit('id', socket.id);
   socket.score = 0;
   socket.bullet = false;
   console.log('New Player:', socket.id);
@@ -180,6 +181,12 @@ io.on('connection', function (socket) {
     console.log('Player left:', socket.id);
     socket.emit('delete', [socket.id, entities[socket.id]]);
     delete entities[socket.id];
+  });
+
+  socket.on('die', function () {
+    socket.score = 0;
+    entities[socket.id].x = player_x;
+    entities[socket.id].y = player_y;
   });
 
   socket.on('move', function (dir) {
