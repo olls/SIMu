@@ -4,7 +4,7 @@ var socketio = require('socket.io');
 var path = require('path');
 
 // Server Setup
-var port = 3000;
+var port = 6005;
 var app = express();
 var server = http.Server(app);
 var io = socketio(server);
@@ -24,12 +24,19 @@ var entities = {};
 // Sockets
 io.on('connection', function (socket) {
   socket.id = id++;
+  console.log('New Player:', socket.id);
   entities[socket.id] = {
     type: 'player',
     x: player_x,
     y: player_y
   };
-  socket.broadcast.emit('new', [socket.id, entities[socket.id]]);
+  // Pass all entities to new client
+  socket.broadcast.emit('new', entities);
+
+  socket.on('leave', function () {
+    socket.emit('delete', [socket.id, entities[socket.id]]);
+    delete entities[socket.id];
+  });
 
   socket.on('move', function (dir) {
     if (dir == 'left') {
@@ -40,14 +47,14 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('update', [socket.id, entities[socket.id]]);
   });
 
-  socket.on('fire', function (data) {
+  socket.on('fire', function () {
     var bid = id++;
     entities[bid] = {
       type: 'bullet',
       x: entities[socket.id].x + (p_width / 2),
       y: entities[socket.id].y
     };
-    socket.broadcast.emit('new', [bid, entities[bid]]);
+    socket.broadcast.emit('new', {bid: entities[bid]});
 
     update_bullet(bid, socket, entities);
     function update_bullet (bid, socket, entities) {
@@ -61,7 +68,6 @@ io.on('connection', function (socket) {
       }
     };
   });
-
 });
 
 server.listen(port, function () {
