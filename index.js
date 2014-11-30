@@ -39,7 +39,7 @@ function gen_invaders () {
       entities[e_id] = {
         type: 'invader_' + (4 - (Math.floor(y/2)%4)),
         x: x * (inv_w+25) + (( screen.x - ((inv_w+25) * inv_nx) )/2),
-        y: y * (inv_h+25)
+        y: y * (inv_h+25) + 10
       };
     }
   }

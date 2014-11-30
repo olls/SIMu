@@ -16,10 +16,11 @@
     <script src="pixi.dev.js"></script>
 </head>
 <body>
-
 <script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
 <script>
 	var socket = io(); //Get the socket connection to the server
+
+	var players = document.getElementById('players');
  
 	// create an new instance of a pixi stage with a black background
 	var color = 0x00; //Black background
@@ -95,7 +96,7 @@
 		gameContainer.removeChild(entities[data[0]]);
 		delete entities[data[0]];
 	});
-	
+
 	var map = {32: false, 37: false, 39: false};
 	document.addEventListener("keydown", function(e){
 		if (e.keyCode in map) {
