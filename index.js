@@ -33,6 +33,11 @@ io.on('connection', function (socket) {
   // Pass all entities to new client
   socket.broadcast.emit('new', entities);
 
+  socket.on('leave', function () {
+    socket.emit('delete', [socket.id, entities[socket.id]]);
+    delete entities[socket.id];
+  });
+
   socket.on('move', function (dir) {
     if (dir == 'left') {
       entities[socket.id].x -= p_speed;
@@ -42,7 +47,7 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('update', [socket.id, entities[socket.id]]);
   });
 
-  socket.on('fire', function (data) {
+  socket.on('fire', function () {
     var bid = id++;
     entities[bid] = {
       type: 'bullet',
@@ -63,7 +68,6 @@ io.on('connection', function (socket) {
       }
     };
   });
-
 });
 
 server.listen(port, function () {
