@@ -28,6 +28,9 @@ var inv_speed = 15;
 var inv_ny = 8;
 var inv_nx = 15;
 
+var inv_bullet_w = 28/2;
+var inv_bullet_h = 51/2;
+
 var entities = {};
 
 gen_invaders();
@@ -101,8 +104,8 @@ function player_collides (bid) {
   for (var id in entities) {
     // If id is a player and it collides with bullet
     if ((entities[id].type == 'player' && entities[id].alive) &&
-        (entities[bid].x >= entities[id].x && entities[bid].x <= (entities[id].x + p_width) &&
-         entities[bid].y >= entities[id].y && entities[bid].y <= (entities[id].y + p_height))) {
+        ((entities[bid].x + inv_bullet_w) >= entities[id].x && entities[bid].x <= (entities[id].x + p_width) &&
+         (entities[bid].y + inv_bullet_h) >= entities[id].y && entities[bid].y <= (entities[id].y + p_height))) {
       return id;
     }
   }
