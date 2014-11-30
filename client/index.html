@@ -59,7 +59,7 @@ function init()
 	var renderer = PIXI.autoDetectRenderer(screen_width, screen_height);
  
 	var sprite_types = {'bullet' : 0, 'invader_1' : 1, 'invader_2' : 2, 'invader_3' : 3, 'invader_4' : 4, 'player':5, 'explode_inv':6, 'queen' : 7, 'bullet_inv' : 8};
- 
+	var game_started = false;
  
 	// importing a texture atlas created with texturepacker
 	var tileAtlas = ["Resources/sprite.json"];
@@ -71,6 +71,11 @@ function init()
 	stage.addChild(gameContainer);
 	// add the renderer view element to the DOM
 	document.body.appendChild(renderer.view);
+	//Load the start screen
+	// create a texture from an image path
+	var texture = PIXI.Texture.fromImage("Resources/start_screen.jpg");
+	// create a new Sprite using the texture
+	var start_screen = new PIXI.Sprite(texture);
 	// use callback
 	loader.onComplete = onSpritesLoaded;
 	
@@ -136,11 +141,11 @@ function init()
 		
 		if (socket_id == data[0])
 		{
-			//Player hit, so game over
-			alert('Game Over. Press OK to play again');
+			//Player hit, so game over and show the start screen again
 			socket.emit('die');
 			map = {32: false, 37: false, 39: false};
-			socket.emit('start');
+			stage.addChild(start_screen);
+			//socket.emit('start');
 		}
 	});
 	
@@ -166,9 +171,12 @@ function init()
 	}, false);
 	
 	function onSpritesLoaded(){
-
+		start_screen.position.x = (screen_width - 906 ) / 2;
+		//start_screen.position.y = (screen_height - 639 ) / 2;
+		
+		stage.addChild(start_screen);
+		
 		window.setInterval(inputLoop, 60);
-		socket.emit('start');
 		requestAnimFrame(animate);
 	}
 
@@ -212,7 +220,12 @@ function init()
 	function inputLoop()
 	{
 		if(map[32]) {
-			socket.emit('fire');
+			if (!game_started)
+			{
+				socket.emit('start');
+				game_started = true;
+			}
+			else socket.emit('fire');
 		}
 		if(map[37]) //move left
 		{
