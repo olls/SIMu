@@ -51,9 +51,14 @@
 	loader.load();
 	
 	var entities = {};
+	var socket_id;
 	
 	
 	//Listen to server's broadcasts
+	socket.on('id', function(id){
+		socket_id = id;
+	});
+	
 	socket.on('new', function(server_entities){
 		//Creates a sprite for all sprites passed in as an array
 		for (var id in server_entities)
@@ -92,10 +97,14 @@
 			gameContainer.removeChild(sprite);
 		}, 250);
 		
-		gameContainer.removeChild(entities[data[0]]);
-		delete entities[data[0]];
+		if (socket_id == data[0])
+		{
+			//Player hit, so game over
+			alert('Game Over. Press OK to play again');
+			socket.emit('die');
+		}
 	});
-
+	
 	var map = {32: false, 37: false, 39: false};
 	document.addEventListener("keydown", function(e){
 		if (e.keyCode in map) {
