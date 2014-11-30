@@ -14,14 +14,66 @@ app.use(express.static(path.join(__dirname, 'client')));
 // Game Setup
 var id = 0;
 var screen = {x: 1400, y:800};
+
 var p_width = 72/2;
 var p_height = 52/2;
 var player_x = (screen.x - p_width) / 2;
 var player_y = screen.y - p_height;
 var p_speed = 10;
+
+var inv_w = 110/4;
+var inv_h = 80/4;
+var inv_d = 1;
+var inv_speed = 15;
+
 var entities = {};
 
 gen_invaders();
+
+function gen_invaders () {
+  for (var y = 0; y < 7; y++) {
+    for (var x = 0; x < 15; x++) {
+      var e_id = id++;
+      entities[e_id] = {
+        type: 'invader_1',
+        x: x * (inv_w+25),
+        y: y * (inv_h+25)
+      };
+    }
+  }
+}
+
+function move_invaders () {
+  // Find left-most and right-most invaders
+  var left = {x: 10000};
+  var right = {x: -10000};
+  for (var id in entities) {
+    if (entities[id].type.indexOf('invader') > -1) {
+      if (entities[id].x < left.x) {
+        left = entities[id];
+      }
+      if (entities[id].x > right.x) {
+        right = entities[id];
+      }
+    }
+  }
+
+  // Move invaders
+  if (right.x >= (screen.x - inv_w - 30)) {
+    inv_d = -1;
+  } else if (left.x <= inv_w + 30) {
+    inv_d = 1;
+  }
+
+  for (var id in entities) {
+    if (entities[id].type.indexOf('invader') > -1) {
+      entities[id].x += inv_d * inv_speed;
+      io.sockets.emit('update', [id, entities[id]])
+    }
+  }
+}
+
+setInterval(move_invaders, 500);
 
 // Sockets
 io.on('connection', function (socket) {
@@ -46,9 +98,9 @@ io.on('connection', function (socket) {
   });
 
   socket.on('move', function (dir) {
-    if (dir == 'left') {
+    if (dir == 'left' && entities[socket.id].x > p_speed) {
       entities[socket.id].x -= p_speed;
-    } else if (dir == 'right') {
+    } else if (dir == 'right' && entities[socket.id].x < (screen.x - p_speed - p_width)) {
       entities[socket.id].x += p_speed;
     }
     socket.broadcast.emit('update', [socket.id, entities[socket.id]]);
@@ -87,19 +139,3 @@ io.on('connection', function (socket) {
 server.listen(port, function () {
   console.log('Running on port', port);
 });
-
-function gen_invaders () {
-  var inv_w = 110/2;
-  var inv_h = 80/2;
-
-  for (var y = 0; y < 5; y++) {
-    for (var x = 0; x < 10; x++) {
-      var e_id = id++;
-      entities[e_id] = {
-        type: 'invader_1',
-        x: x * (inv_w+25),
-        y: y * (inv_h+25)
-      };
-    }
-  }
-}
