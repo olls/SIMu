@@ -58,6 +58,7 @@
 	});
 	
 	socket.on('update', function(data){
+	console.log(data);
 		entities[data[0]].position.x = data[1].x;
 		entities[data[0]].position.y = data[1].y;
 	});
@@ -65,10 +66,6 @@
 	
 		gameContainer.removeChild(entities[data[0]]);
 		delete entities[data[0]];
-	});
-	
-	window.addEventListener("unload", function(e){
-		socket.emit('leave');
 	});
 	
 	var map = {32: false, 37: false, 39: false};
@@ -95,16 +92,19 @@
 	function createSprite(id, server_entity)
 	{
 		var sprite = PIXI.Sprite.fromFrame(sprite_types[server_entity.type]);
-				
-		//Add the sprite to the array so that we can move it later
-		entities[id] = sprite;
 		
-		// place the sprite
-		sprite.position.x = server_entity.x;
-		sprite.position.y = server_entity.y;
-		
-		// add the sprite
-		gameContainer.addChild(sprite);
+		if (entities[id] === undefined)
+		{
+			//Add the sprite to the array so that we can move it later
+			entities[id] = sprite;
+			
+			// place the sprite
+			sprite.position.x = server_entity.x;
+			sprite.position.y = server_entity.y;
+			
+			// add the sprite
+			gameContainer.addChild(sprite);
+		}
 	}
 	
 	
