@@ -31,7 +31,10 @@ io.on('connection', function (socket) {
     y: player_y
   };
   // Pass all entities to new client
-  socket.broadcast.emit('new', entities);
+  socket.emit('new', entities);
+  var p_ent = {};
+  p_ent[socket.id] = entities[socket.id];
+  socket.broadcast.emit('new', p_ent);
 
   socket.on('disconnect', function () {
     console.log('Player left:', socket.id);
