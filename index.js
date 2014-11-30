@@ -24,7 +24,7 @@ var p_speed = 10;
 var inv_w = 110/4;
 var inv_h = 80/4;
 var inv_d = 1;
-var inv_speed = 150;
+var inv_speed = 15;
 var inv_ny = 8;
 var inv_nx = 15;
 
@@ -201,6 +201,9 @@ io.on('connection', function (socket) {
 
   socket.on('start', function () {
     entities[socket.id].alive = true;
+    var update = {};
+    update[socket.id] = entities[socket.id];
+    socket.broadcast.emit('update', update);
   });
 
   socket.on('die', function () {
