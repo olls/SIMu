@@ -22,11 +22,11 @@
 // Load them google fonts before starting...!
 WebFontConfig = {
 google: {
-families: [ 'Snippet', 'Arvo:700italic', 'Podkova:700' ]
+families: [ 'Snippet', 'Arvo:700italic', 'Podkova:700', 'VT323' ]
 },
 active: function() {
 // do something
-//init();
+init();
 }
 };
 (function() {
@@ -39,9 +39,6 @@ var s = document.getElementsByTagName('script')[0];
 s.parentNode.insertBefore(wf, s);
 })();
 
-function init()
-{// create some white text using the Snippet webfont
-}
 
 
 
@@ -79,9 +76,14 @@ function init()
 	// use callback
 	loader.onComplete = onSpritesLoaded;
 	
-	//begin load
-	loader.load();
-	
+	function init()
+	{// create some white text using the Snippet webfont
+
+		//begin load
+		loader.load();
+	}
+
+
 	var entities = {};
 	var player_scores = {}; //keep a track of all the players' scores
 	var socket_id;
@@ -93,7 +95,7 @@ function init()
 		socket_id = id;
 		
 		
-		var text = new PIXI.Text("Score: 0", { font: "35px Snippet", fill: "white", align: "left" });
+		var text = new PIXI.Text("Score: 0", { font: "40px VT323", fill: "yellow", align: "left" });
 		text.position.x = 100;
 		text.position.y = 20;
 		stage.addChild(text);
@@ -172,7 +174,7 @@ function init()
 	
 	function onSpritesLoaded(){
 		start_screen.position.x = (screen_width - 906 ) / 2;
-		//start_screen.position.y = (screen_height - 639 ) / 2;
+		start_screen.position.y = (screen_height - 639 ) / 2;
 		
 		stage.addChild(start_screen);
 		
