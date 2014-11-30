@@ -40,6 +40,10 @@ s.parentNode.insertBefore(wf, s);
 })();
 
 
+	function init()
+	{// create some white text using the Snippet webfont
+
+	}
 
 
 	var socket = io(); //Get the socket connection to the server
@@ -75,13 +79,9 @@ s.parentNode.insertBefore(wf, s);
 	var start_screen = new PIXI.Sprite(texture);
 	// use callback
 	loader.onComplete = onSpritesLoaded;
+	//begin load
+	loader.load();
 	
-	function init()
-	{// create some white text using the Snippet webfont
-
-		//begin load
-		loader.load();
-	}
 
 
 	var entities = {};
@@ -175,8 +175,7 @@ s.parentNode.insertBefore(wf, s);
 	}, false);
 	
 	function onSpritesLoaded(){
-		start_screen.position.x = (screen_width - 906 ) / 2;
-		start_screen.position.y = (screen_height - 639 ) / 2;
+		start_screen.position.x = start_screen.position.y = 0;
 		
 		stage.addChild(start_screen);
 		
