@@ -146,6 +146,8 @@ s.parentNode.insertBefore(wf, s);
 			//Player hit, so game over and show the start screen again
 			socket.emit('die');
 			map = {32: false, 37: false, 39: false};
+			
+			game_started=false;
 			stage.addChild(start_screen);
 			//socket.emit('start');
 		}
@@ -225,6 +227,7 @@ s.parentNode.insertBefore(wf, s);
 			if (!game_started)
 			{
 				socket.emit('start');
+				stage.removeChild(start_screen);
 				game_started = true;
 			}
 			else socket.emit('fire');
