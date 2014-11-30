@@ -100,6 +100,7 @@ function collides (bid) {
 // Sockets
 io.on('connection', function (socket) {
   socket.id = id++;
+  socket.score = 0;
   socket.bullet = false;
   console.log('New Player:', socket.id);
   entities[socket.id] = {
@@ -159,6 +160,7 @@ io.on('connection', function (socket) {
 
           // Bullet hit invader
           socket.bullet = false;
+          socket.score++;
           socket.broadcast.emit('delete', [bid, entities[bid]]);
           delete entities[bid];
           socket.broadcast.emit('explode', [inv_id, entities[inv_id]]);
