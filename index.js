@@ -95,9 +95,8 @@ setInterval(move_invaders, 500);
 function game_over () {
   io.sockets.emit('gameover');
   setTimeout(function () {
-    gen_invaders();
-    io.sockets.emit('new', entities);
-  }, 1000)
+    throw '';
+  }, 1000);
 }
 
 function collides (bid) {
