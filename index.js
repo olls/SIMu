@@ -65,12 +65,14 @@ function move_invaders () {
     inv_d = 1;
   }
 
+  var update = {};
   for (var id in entities) {
     if (entities[id].type.indexOf('invader') > -1) {
       entities[id].x += inv_d * inv_speed;
-      io.sockets.emit('update', [id, entities[id]])
+      update[id] = entities[id];
     }
   }
+  io.sockets.emit('update', update);
 }
 
 setInterval(move_invaders, 500);
@@ -125,7 +127,9 @@ io.on('connection', function (socket) {
     function update_bullet (bid, socket, entities) {
       if (entities[bid].y > 0) {
         entities[bid].y -= 20;
-        socket.broadcast.emit('update', [bid, entities[bid]]);
+        var update = {};
+        update[bid] = entities[bid];
+        socket.broadcast.emit('update', update);
         setTimeout(function () {update_bullet(bid, socket, entities)}, 200);
       } else {
         socket.bullet = false;
