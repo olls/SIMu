@@ -49,9 +49,15 @@
 	
 	
 	//Listen to server's broadcasts
-	socket.on('new', function(data){
-		createSprite(data[0], data[1]);
+	socket.on('new', function(server_entities){
+		//Creates a sprite for all sprites passed in as an array
+		for (var id in server_entities)
+		{
+			createSprite(id, server_entities[id]);
+		}
 	});
+	
+	
 	socket.on('update', function(data){
 		entities[data[0]].position.x = data[1].x;
 		entities[data[0]].position.y = data[1].y;
