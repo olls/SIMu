@@ -6,8 +6,13 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #fff;
+            background-color: #333;
         }
+		canvas{
+			margin:auto;
+			display:block;
+			
+		}
     </style>
     <script src="pixi.dev.js"></script>
 </head>
@@ -22,7 +27,7 @@
     var stage = new PIXI.Stage(color); 
  
     // create a renderer instance. width=1000, height = 800
-	var screen_width = 1000;
+	var screen_width = 1400;
 	var screen_height = 800;
     var renderer = PIXI.autoDetectRenderer(screen_width, screen_height);
  
@@ -86,13 +91,14 @@
 	
 	function onSpritesLoaded(){
 	
+		window.setInterval(inputLoop, 60);
 		requestAnimFrame(animate);
 	}
 
 	function createSprite(id, server_entity)
 	{
 		var sprite = PIXI.Sprite.fromFrame(sprite_types[server_entity.type]);
-		
+		sprite.scale.x  = sprite.scale.y = 0.5;
 		if (entities[id] === undefined)
 		{
 			//Add the sprite to the array so that we can move it later
@@ -109,20 +115,6 @@
 	
 	
 	function animate() {
-	
-		if(map[32]) {
-			socket.emit('fire');
-		}
-		if(map[37]) //move left
-		{
-			socket.emit('move', 'left');
-		}
-		if (map[39]) //move right
-		{
-			socket.emit('move', 'right');
-		}
-			
-			
 		/*//var temp = get_positions();
 		//if (invaders[invaders.length-1].position.x <= screen_width)
 			for (i=0; i<invaders.length; i++)
@@ -139,6 +131,22 @@
 		renderer.render(stage);
 		
 		//console.log('test');
+	}
+	
+	//Function to limit input bullets or any inputs
+	function inputLoop()
+	{
+		if(map[32]) {
+			socket.emit('fire');
+		}
+		if(map[37]) //move left
+		{
+			socket.emit('move', 'left');
+		}
+		if (map[39]) //move right
+		{
+			socket.emit('move', 'right');
+		}
 	}
 	
     // Code will go here
