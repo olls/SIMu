@@ -15,7 +15,7 @@
 
 <script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
 <script>
-	var socket = io(); //Get the socket conn to the server
+	var socket = io(); //Get the socket connection to the server
  
  // create an new instance of a pixi stage with a black background
 	var color = 0x00; //Black background
@@ -57,16 +57,18 @@
 		}
 	});
 	
-	
 	socket.on('update', function(data){
 		entities[data[0]].position.x = data[1].x;
 		entities[data[0]].position.y = data[1].y;
 	});
 	socket.on('delete', function(data){
-		//console.log(data)
-		
+	
 		gameContainer.removeChild(entities[data[0]]);
 		delete entities[data[0]];
+	});
+	
+	document.addEventListener("unload", function(e){
+		socket.emit('leave');
 	});
 	
 	var map = {32: false, 37: false, 39: false};
