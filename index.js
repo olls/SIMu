@@ -33,7 +33,7 @@ io.on('connection', function (socket) {
   // Pass all entities to new client
   socket.broadcast.emit('new', entities);
 
-  socket.on('leave', function () {
+  socket.on('disconnect', function () {
     console.log('Player left:', socket.id);
     socket.emit('delete', [socket.id, entities[socket.id]]);
     delete entities[socket.id];
