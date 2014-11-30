@@ -124,8 +124,6 @@
 	});
 	
 	socket.on('explode', function(data){
-		console.log('exploded');
-	
 		//Animate explosion
 		var sprite = new PIXI.Sprite.fromFrame(sprite_types['explode_inv']);
 		sprite.scale.x = sprite.scale.y = 0.25;
@@ -152,6 +150,10 @@
 			//socket.emit('start');
 		}
 	});
+	
+	socket.on('gameover', function()){
+		entities = {};
+	}
 	
 	socket.on('score', function(data){
 		//Update individual score
