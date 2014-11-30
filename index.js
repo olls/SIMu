@@ -59,17 +59,22 @@ function move_invaders () {
   }
 
   // Move invaders
+  var edge = false;
   if (right.x >= (screen.x - inv_w - 30)) {
     inv_d = -1;
+    edge = true;
   } else if (left.x <= inv_w + 30) {
     inv_d = 1;
+    edge = true;
   }
 
   var update = {};
   for (var id in entities) {
     if (entities[id].type.indexOf('invader') > -1) {
       entities[id].x += inv_d * inv_speed;
-      entities[id].y += inv_speed;
+      if (edge) {
+        entities[id].y += inv_speed;
+      }
       update[id] = entities[id];
     }
   }
