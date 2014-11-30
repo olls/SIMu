@@ -85,6 +85,25 @@ function move_invaders () {
 
 setInterval(move_invaders, 500);
 
+function collides(bid)
+{
+	for (var id in entities)
+	{
+		if (entities[id].type.indexOf('invader') > -1) {
+			
+			if (entities[bid].x >= entities[id].x && entities[bid].x <= (entities[id].x + inv_w) &&
+				entities[bid].y >= entities[id].y && entities[bid].y <= (entities[id].y + inv_h)
+			)	
+			{
+				//YAY collision
+				return id;
+			}
+		}
+	}
+	
+	return false;
+}
+
 // Sockets
 io.on('connection', function (socket) {
   socket.id = id++;
@@ -136,18 +155,22 @@ io.on('connection', function (socket) {
     update_bullet(bid, socket, entities);
     function update_bullet (bid, socket, entities) {
       if (entities[bid].y > 0) {
-        if (var inv_id = collides(bid)) {
+		var inv_id = collides(bid);
+        if (inv_id) {
           socket.bullet = false;
           socket.broadcast.emit('delete', [bid, entities[bid]]);
           delete entities[bid];
           socket.broadcast.emit('delete', [inv_id, entities[inv_id]]);
           delete entities[inv_id];
         }
-        entities[bid].y -= 20;
-        var update = {};
-        update[bid] = entities[bid];
-        socket.broadcast.emit('update', update);
-        setTimeout(function () {update_bullet(bid, socket, entities)}, 200);
+		else 
+		{
+			entities[bid].y -= 20;
+			var update = {};
+			update[bid] = entities[bid];
+			socket.broadcast.emit('update', update);
+			setTimeout(function () {update_bullet(bid, socket, entities)}, 200);
+		}
       } else {
         socket.bullet = false;
         socket.broadcast.emit('delete', [bid, entities[bid]]);
