@@ -105,7 +105,9 @@ io.on('connection', function (socket) {
     } else if (dir == 'right' && entities[socket.id].x < (screen.x - p_speed - p_width)) {
       entities[socket.id].x += p_speed;
     }
-    socket.broadcast.emit('update', [socket.id, entities[socket.id]]);
+    var update = {};
+    update[socket.id] = entities[socket.id];
+    socket.broadcast.emit('update', update);
   });
 
   socket.on('fire', function () {
