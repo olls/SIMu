@@ -96,8 +96,12 @@ function game_over () {
   for (var id in entities) {
     if (entities[id].type == 'player') {
       io.sockets.emit('explode', [id, entities[id]]);
+    } else {
+      io.sockets.emit('delete', [id, entities[id]]);
     }
   }
+  gen_invaders();
+  io.sockets.emit('new', entities);
 }
 
 function collides (bid) {
