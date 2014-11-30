@@ -187,6 +187,9 @@ io.on('connection', function (socket) {
     socket.score = 0;
     entities[socket.id].x = player_x;
     entities[socket.id].y = player_y;
+    var update = {};
+    update[socket.id] = entities[socket.id];
+    socket.broadcast.emit('update', update);
   });
 
   socket.on('move', function (dir) {
