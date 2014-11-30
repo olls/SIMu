@@ -114,7 +114,7 @@ function player_collides (bid) {
 
 function get_score(inv_id) {
   // Get the score value for a invader
-  return entities[inv_id].type.split('_')[1];
+  return parseInt(entities[inv_id].type.split('_')[1]);
 }
 
 function invader_fire () {
