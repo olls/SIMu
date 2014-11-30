@@ -98,7 +98,12 @@
 	function createSprite(id, server_entity)
 	{
 		var sprite = PIXI.Sprite.fromFrame(sprite_types[server_entity.type]);
-		sprite.scale.x  = sprite.scale.y = 0.5;
+		if (server_entity.type.indexOf("invader_1") > -1)
+		{
+			sprite.scale.x  = sprite.scale.y = 0.25;
+		}
+		else sprite.scale.x  = sprite.scale.y = 0.5;
+		
 		if (entities[id] === undefined)
 		{
 			//Add the sprite to the array so that we can move it later
