@@ -39,6 +39,15 @@ var s = document.getElementsByTagName('script')[0];
 s.parentNode.insertBefore(wf, s);
 })();
 
+function init()
+{// create some white text using the Snippet webfont
+		var text = new PIXI.Text("Score: 0", { font: "35px Snippet", fill: "white", align: "left" });
+		text.position.x = 20;
+		text.position.y = 20;
+		stage.addChild(text);
+		
+		player_scores[socket_id] = text;
+}
 
 
 
@@ -134,6 +143,7 @@ s.parentNode.insertBefore(wf, s);
 	
 	socket.on('score', function(data){
 		//Update individual score
+		console.log(data);
 		player_scores[data[0]].setText("Score: "+data[1]);
 		
 		
@@ -211,15 +221,6 @@ s.parentNode.insertBefore(wf, s);
 	}
 	
 	
-	 function init()
-{// create some white text using the Snippet webfont
-		var text = new PIXI.Text("Score: 0", { font: "35px Snippet", fill: "white", align: "left" });
-		text.position.x = 20;
-		text.position.y = 20;
-		stage.addChild(text);
-		
-		player_scores[socket_id] = text;
-}
 
      </script>
  
