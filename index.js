@@ -93,7 +93,7 @@ function gen_invaders () {
   var inv_h = 80/2;
 
   for (var y = 0; y < 5; y++) {
-    for (var x = 0; y < 10; x++) {
+    for (var x = 0; x < 10; x++) {
       var e_id = id++;
       entities[id] = {
         type: 'invader_1',
