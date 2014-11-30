@@ -31,7 +31,7 @@
 	var screen_height = 800;
     var renderer = PIXI.autoDetectRenderer(screen_width, screen_height);
  
-	var sprite_types = {'bullet' : 0, 'invader_1' : 1, 'invader_2' : 2, 'invader_3' : 3, 'invader_4' : 4, 'player':5};
+	var sprite_types = {'bullet' : 0, 'invader_1' : 1, 'invader_2' : 2, 'invader_3' : 3, 'invader_4' : 4, 'player':5, 'invader_explode':6};
  
  
 	// importing a texture atlas created with texturepacker
@@ -72,6 +72,27 @@
 	});
 	
 	socket.on('delete', function(data){
+		gameContainer.removeChild(entities[data[0]]);
+		delete entities[data[0]];
+	});
+	
+	socket.on('explode', function(data){
+		//Animate explosion
+		var sprite = PIXI.Sprite.fromFrame(sprite_types['invader_explode']);
+		sprite.scale.x = sprite.scale.y = 0.25;
+			
+		// place the explosion sprite
+		sprite.position.x = data[1].x;
+		sprite.position.y = data[1].y;
+		
+		// add the sprite
+		gameContainer.addChild(sprite);
+		window.setTimeout(function(){
+			//Remove the invader explosion
+			gameContainer.removeChild(sprite);
+		}, 250);
+		
+		//Remove the invader
 		gameContainer.removeChild(entities[data[0]]);
 		delete entities[data[0]];
 	});
