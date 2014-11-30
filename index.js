@@ -69,6 +69,7 @@ function move_invaders () {
   for (var id in entities) {
     if (entities[id].type.indexOf('invader') > -1) {
       entities[id].x += inv_d * inv_speed;
+      entities[id].y += inv_speed;
       update[id] = entities[id];
     }
   }
