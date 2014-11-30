@@ -98,7 +98,7 @@
 	function createSprite(id, server_entity)
 	{
 		var sprite = PIXI.Sprite.fromFrame(sprite_types[server_entity.type]);
-		if (server_entity.type.indexOf("invader_1") > -1)
+		if (server_entity.type.indexOf("invader_") > -1)
 		{
 			sprite.scale.x  = sprite.scale.y = 0.25;
 		}
