@@ -53,6 +53,7 @@
 	var entities = {};
 	var socket_id;
 	
+	var map = {32: false, 37: false, 39: false};
 	
 	//Listen to server's broadcasts
 	socket.on('id', function(id){
@@ -102,10 +103,11 @@
 			//Player hit, so game over
 			alert('Game Over. Press OK to play again');
 			socket.emit('die');
+			map = {32: false, 37: false, 39: false};
 		}
 	});
 	
-	var map = {32: false, 37: false, 39: false};
+	
 	document.addEventListener("keydown", function(e){
 		if (e.keyCode in map) {
 			map[e.keyCode] = true;
