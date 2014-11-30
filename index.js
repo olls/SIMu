@@ -95,11 +95,12 @@ function gen_invaders () {
   for (var y = 0; y < 5; y++) {
     for (var x = 0; x < 10; x++) {
       var e_id = id++;
-      entities[id] = {
+      entities[e_id] = {
         type: 'invader_1',
-        x: x*inv_w + 10,
-        y: y*inv_h + 10
+        x: (x*inv_w) + 10,
+        y: (y*inv_h) + 10
       };
+      console.log(entities[e_id])
     }
   }
 }
