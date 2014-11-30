@@ -25,7 +25,7 @@ var inv_w = 110/4;
 var inv_h = 80/4;
 var inv_d = 1;
 var inv_speed = 15;
-var inv_ny = 7;
+var inv_ny = 8;
 var inv_nx = 15;
 
 var entities = {};
@@ -37,7 +37,7 @@ function gen_invaders () {
     for (var x = 0; x < inv_nx; x++) {
       var e_id = id++;
       entities[e_id] = {
-        type: 'invader_1',
+        type: 'invader_' + (4 - (Math.floor(y/2)%4)),
         x: x * (inv_w+25) + (( screen.x - ((inv_w+25) * inv_nx) )/2),
         y: y * (inv_h+25)
       };
@@ -95,6 +95,11 @@ function collides (bid) {
     }
   }
   return false;
+}
+
+function get_score(inv_id) {
+  // Get the score value for a invader
+  return entities[inv_id].type.slice('_')[1];
 }
 
 // Sockets
@@ -160,7 +165,10 @@ io.on('connection', function (socket) {
 
           // Bullet hit invader
           socket.bullet = false;
-          socket.score++;
+
+          socket.score += get_score(inv_id);
+          socket.broadcast.emit('score', [socket.id, socket.score]);
+
           socket.broadcast.emit('delete', [bid, entities[bid]]);
           delete entities[bid];
           socket.broadcast.emit('explode', [inv_id, entities[inv_id]]);
@@ -172,7 +180,7 @@ io.on('connection', function (socket) {
           var update = {};
           update[bid] = entities[bid];
           socket.broadcast.emit('update', update);
-          setTimeout(function () {update_bullet(bid, socket, entities)}, 200);
+          setTimeout(function () {update_bullet(bid, socket, entities)}, 100);
         }
       }
     };
