@@ -1,5 +1,5 @@
 {
       "start_cmd": ["npm install", "pm2 restart simu"],
       "copy_to": "/var/node/simu",
-      "url": "simu.oliverfaircliff.com"
+      "url": "http://simu.oliverfaircliff.com"
 }
